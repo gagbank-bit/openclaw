@@ -84,7 +84,7 @@ function getHooksForName<K extends PluginHookName>(
 ): PluginHookRegistration<K>[] {
   return (registry.typedHooks as PluginHookRegistration<K>[])
     .filter((h) => h.hookName === hookName)
-    .toSorted((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+    .slice().sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
 }
 
 /**

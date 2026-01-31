@@ -199,7 +199,7 @@ function normalizeScopes(scopes: string[] | undefined): string[] {
     const trimmed = scope.trim();
     if (trimmed) out.add(trimmed);
   }
-  return [...out].toSorted();
+  return [...out].slice().sort();
 }
 
 function scopesAllow(requested: string[], allowed: string[]): boolean {
@@ -215,8 +215,8 @@ function newToken() {
 
 export async function listDevicePairing(baseDir?: string): Promise<DevicePairingList> {
   const state = await loadState(baseDir);
-  const pending = Object.values(state.pendingById).toSorted((a, b) => b.ts - a.ts);
-  const paired = Object.values(state.pairedByDeviceId).toSorted(
+  const pending = Object.values(state.pendingById).slice().sort((a, b) => b.ts - a.ts);
+  const paired = Object.values(state.pairedByDeviceId).slice().sort(
     (a, b) => b.approvedAtMs - a.approvedAtMs,
   );
   return { pending, paired };
@@ -373,7 +373,7 @@ export function summarizeDeviceTokens(
       revokedAtMs: token.revokedAtMs,
       lastUsedAtMs: token.lastUsedAtMs,
     }))
-    .toSorted((a, b) => a.role.localeCompare(b.role));
+    .slice().sort((a, b) => a.role.localeCompare(b.role));
   return summaries.length > 0 ? summaries : undefined;
 }
 

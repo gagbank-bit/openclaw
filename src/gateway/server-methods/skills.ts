@@ -52,7 +52,7 @@ function collectSkillBins(entries: SkillEntry[]): string[] {
       }
     }
   }
-  return [...bins].toSorted();
+  return [...bins].slice().sort();
 }
 
 export const skillsHandlers: GatewayRequestHandlers = {
@@ -95,7 +95,7 @@ export const skillsHandlers: GatewayRequestHandlers = {
       const entries = loadWorkspaceSkillEntries(workspaceDir, { config: cfg });
       for (const bin of collectSkillBins(entries)) bins.add(bin);
     }
-    respond(true, { bins: [...bins].toSorted() }, undefined);
+    respond(true, { bins: [...bins].slice().sort() }, undefined);
   },
   "skills.install": async ({ params, respond }) => {
     if (!validateSkillsInstallParams(params)) {

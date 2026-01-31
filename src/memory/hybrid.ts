@@ -107,5 +107,5 @@ export function mergeHybridResults(params: {
     };
   });
 
-  return merged.toSorted((a, b) => b.score - a.score);
+  return merged.slice().sort((a, b) => b.score - a.score);
 }

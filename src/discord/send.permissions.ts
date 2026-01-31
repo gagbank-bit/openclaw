@@ -60,7 +60,7 @@ function removePermissionBits(base: bigint, deny?: string) {
 function bitfieldToPermissions(bitfield: bigint) {
   return PERMISSION_ENTRIES.filter(([, value]) => (bitfield & value) === value)
     .map(([name]) => name)
-    .toSorted();
+    .slice().sort();
 }
 
 export function isThreadChannelType(channelType?: number) {

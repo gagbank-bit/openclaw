@@ -33,7 +33,7 @@ const truncate = (value: string, max: number) => {
 };
 
 function sortScanResults(results: ModelScanResult[]): ModelScanResult[] {
-  return results.slice().toSorted((a, b) => {
+  return results.slice().slice().sort((a, b) => {
     const aImage = a.image.ok ? 1 : 0;
     const bImage = b.image.ok ? 1 : 0;
     if (aImage !== bImage) return bImage - aImage;
@@ -55,7 +55,7 @@ function sortScanResults(results: ModelScanResult[]): ModelScanResult[] {
 }
 
 function sortImageResults(results: ModelScanResult[]): ModelScanResult[] {
-  return results.slice().toSorted((a, b) => {
+  return results.slice().slice().sort((a, b) => {
     const aLatency = a.image.latencyMs ?? Number.POSITIVE_INFINITY;
     const bLatency = b.image.latencyMs ?? Number.POSITIVE_INFINITY;
     if (aLatency !== bLatency) return aLatency - bLatency;

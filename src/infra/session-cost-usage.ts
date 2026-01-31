@@ -219,7 +219,7 @@ export async function loadCostUsageSummary(params?: {
 
   const daily = Array.from(dailyMap.entries())
     .map(([date, bucket]) => Object.assign({ date }, bucket))
-    .toSorted((a, b) => a.date.localeCompare(b.date));
+    .slice().sort((a, b) => a.date.localeCompare(b.date));
 
   return {
     updatedAt: Date.now(),

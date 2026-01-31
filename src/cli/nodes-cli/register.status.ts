@@ -146,7 +146,7 @@ export function registerNodesStatusCommands(nodes: Command) {
               pathEnv ? `path: ${pathEnv}` : null,
             ].filter(Boolean) as string[];
             const caps = Array.isArray(n.caps)
-              ? n.caps.map(String).filter(Boolean).toSorted().join(", ")
+              ? n.caps.map(String).filter(Boolean).slice().sort().join(", ")
               : "?";
             const paired = n.paired ? ok("paired") : warn("unpaired");
             const connected = n.connected ? ok("connected") : muted("disconnected");
@@ -207,10 +207,10 @@ export function registerNodesStatusCommands(nodes: Command) {
           const connected = Boolean(obj.connected);
           const paired = Boolean(obj.paired);
           const caps = Array.isArray(obj.caps)
-            ? obj.caps.map(String).filter(Boolean).toSorted()
+            ? obj.caps.map(String).filter(Boolean).slice().sort()
             : null;
           const commands = Array.isArray(obj.commands)
-            ? obj.commands.map(String).filter(Boolean).toSorted()
+            ? obj.commands.map(String).filter(Boolean).slice().sort()
             : [];
           const perms = formatPermissions(obj.permissions);
           const family = typeof obj.deviceFamily === "string" ? obj.deviceFamily : null;

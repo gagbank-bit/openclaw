@@ -79,7 +79,7 @@ export async function searchVector(params: {
     }))
     .filter((entry) => Number.isFinite(entry.score));
   return scored
-    .toSorted((a, b) => b.score - a.score)
+    .slice().sort((a, b) => b.score - a.score)
     .slice(0, params.limit)
     .map((entry) => ({
       id: entry.chunk.id,

@@ -359,7 +359,7 @@ function readRecentMessagesFromTranscript(
         // skip malformed lines
       }
     }
-    return collected.toReversed();
+    return collected.slice().reverse();
   } catch {
     return [];
   } finally {

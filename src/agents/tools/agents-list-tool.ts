@@ -74,7 +74,7 @@ export function createAgentsListTool(opts?: {
       const all = Array.from(allowed);
       const rest = all
         .filter((id) => id !== requesterAgentId)
-        .toSorted((a, b) => a.localeCompare(b));
+        .slice().sort((a, b) => a.localeCompare(b));
       const ordered = [requesterAgentId, ...rest];
       const agents: AgentListEntry[] = ordered.map((id) => ({
         id,

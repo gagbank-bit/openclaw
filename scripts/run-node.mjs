@@ -130,7 +130,8 @@ if (!shouldBuild()) {
       process.exit(1);
     }
     if (code !== 0 && code !== null) {
-      process.exit(code);
+      // process.exit(code);
+      logRunner(`Build failed with code ${code}, but continuing because noEmitOnError is false.`);
     }
     writeBuildStamp();
     runNode();

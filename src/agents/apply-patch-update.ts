@@ -85,7 +85,7 @@ function applyReplacements(
   replacements: Array<[number, number, string[]]>,
 ): string[] {
   const result = [...lines];
-  for (const [startIndex, oldLen, newLines] of [...replacements].toReversed()) {
+  for (const [startIndex, oldLen, newLines] of [...replacements].slice().reverse()) {
     for (let i = 0; i < oldLen; i += 1) {
       if (startIndex < result.length) {
         result.splice(startIndex, 1);

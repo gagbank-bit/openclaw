@@ -144,7 +144,7 @@ function toRows(store: Record<string, SessionEntry>): SessionRow[] {
         contextTokens: entry?.contextTokens,
       } satisfies SessionRow;
     })
-    .toSorted((a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0));
+    .slice().sort((a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0));
 }
 
 export async function sessionsCommand(

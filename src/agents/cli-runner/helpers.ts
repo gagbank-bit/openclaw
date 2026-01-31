@@ -159,7 +159,7 @@ function buildModelAliasLines(cfg?: OpenClawConfig) {
     entries.push({ alias, model });
   }
   return entries
-    .toSorted((a, b) => a.alias.localeCompare(b.alias))
+    .slice().sort((a, b) => a.alias.localeCompare(b.alias))
     .map((entry) => `- ${entry.alias}: ${entry.model}`);
 }
 

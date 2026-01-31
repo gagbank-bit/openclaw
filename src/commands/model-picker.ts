@@ -140,7 +140,7 @@ export async function promptDefaultModel(
     });
   }
 
-  const providers = Array.from(new Set(models.map((entry) => entry.provider))).toSorted((a, b) =>
+  const providers = Array.from(new Set(models.map((entry) => entry.provider))).slice().sort((a, b) =>
     a.localeCompare(b),
   );
 

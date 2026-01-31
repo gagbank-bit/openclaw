@@ -117,7 +117,7 @@ describe("createOpenClawCodingTools", () => {
         return {
           name: tool.name,
           type: schema?.type,
-          keys: schema ? Object.keys(schema).toSorted() : null,
+          keys: schema ? Object.keys(schema).slice().sort() : null,
         };
       })
       .filter((entry) => entry.type !== "object");

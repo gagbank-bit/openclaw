@@ -39,7 +39,7 @@ function summarizeSources(sources: Array<string | undefined>): {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
   const parts = [...counts.entries()]
-    .toSorted((a, b) => b[1] - a[1])
+    .slice().sort((a, b) => b[1] - a[1])
     .map(([key, n]) => `${key}${n > 1 ? `×${n}` : ""}`);
   const label = parts.length > 0 ? parts.join("+") : "unknown";
   return { label, parts };

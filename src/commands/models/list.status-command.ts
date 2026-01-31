@@ -170,7 +170,7 @@ export async function modelsStatusCommand(
   )
     .map((p) => p.trim())
     .filter(Boolean)
-    .toSorted((a, b) => a.localeCompare(b));
+    .slice().sort((a, b) => a.localeCompare(b));
 
   const applied = getShellEnvAppliedKeys();
   const shellFallbackEnabled =
@@ -185,7 +185,7 @@ export async function modelsStatusCommand(
   const providerAuthMap = new Map(providerAuth.map((entry) => [entry.provider, entry]));
   const missingProvidersInUse = Array.from(providersInUse)
     .filter((provider) => !providerAuthMap.has(provider))
-    .toSorted((a, b) => a.localeCompare(b));
+    .slice().sort((a, b) => a.localeCompare(b));
 
   const probeProfileIds = (() => {
     if (!opts.probeProfile) return [];
@@ -298,7 +298,7 @@ export async function modelsStatusCommand(
         remainingMs: unusableUntil - now,
       });
     }
-    return out.toSorted((a, b) => a.remainingMs - b.remainingMs);
+    return out.slice().sort((a, b) => a.remainingMs - b.remainingMs);
   })();
 
   const checkStatus = (() => {

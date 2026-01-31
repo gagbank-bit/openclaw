@@ -27,7 +27,7 @@ function getSessionRecipients(cfg: OpenClawConfig) {
       updatedAt: entry?.updatedAt ?? 0,
     }))
     .filter(({ to }) => to.length > 1)
-    .toSorted((a, b) => b.updatedAt - a.updatedAt);
+    .slice().sort((a, b) => b.updatedAt - a.updatedAt);
 
   // Dedupe while preserving recency ordering.
   const seen = new Set<string>();

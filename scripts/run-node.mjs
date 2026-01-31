@@ -66,6 +66,7 @@ const findLatestMtime = (dirPath, shouldSkip) => {
 };
 
 const shouldBuild = () => {
+  if (env.OPENCLAW_SKIP_BUILD === "1") return false;
   if (env.OPENCLAW_FORCE_BUILD === "1") return true;
   const stampMtime = statMtime(buildStampPath);
   if (stampMtime == null) return true;

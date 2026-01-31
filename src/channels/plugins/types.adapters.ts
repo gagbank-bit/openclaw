@@ -214,6 +214,7 @@ export type ChannelAuthAdapter = {
     runtime: RuntimeEnv;
     verbose?: boolean;
     channelInput?: string | null;
+    phoneNumber?: string;
   }) => Promise<void>;
 };
 

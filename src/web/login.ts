@@ -12,14 +12,29 @@ export async function loginWeb(
   waitForConnection?: typeof waitForWaConnection,
   runtime: RuntimeEnv = defaultRuntime,
   accountId?: string,
+  phoneNumber?: string,
 ) {
   const wait = waitForConnection ?? waitForWaConnection;
   const cfg = loadConfig();
   const account = resolveWhatsAppAccount({ cfg, accountId });
-  const sock = await createWaSocket(true, verbose, {
+
+  let pairingCode: string | undefined;
+  const sock = await createWaSocket(!phoneNumber, verbose, {
     authDir: account.authDir,
+    phoneNumber,
+    onPairingCode: (code) => {
+      pairingCode = code;
+      console.log(
+        info(
+          `\nPairing code received: ${success(code.toUpperCase())}\n\nEnter this code in WhatsApp -> Linked Devices -> Link with phone number\n`,
+        ),
+      );
+    },
   });
-  logInfo("Waiting for WhatsApp connection...", runtime);
+
+  const identity = phoneNumber || account.accountId || "default";
+  logInfo(`Waiting for WhatsApp connection (${identity})...`, runtime);
+
   try {
     await wait(sock);
     console.log(success("✅ Linked! Credentials saved for future sends."));

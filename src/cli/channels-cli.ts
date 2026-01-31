@@ -214,6 +214,7 @@ export function registerChannelsCli(program: Command) {
     .description("Link a channel account (if supported)")
     .option("--channel <channel>", "Channel alias (default: whatsapp)")
     .option("--account <id>", "Account id (accountId)")
+    .option("--phone <number>", "Phone number for pairing code (E.164 format)")
     .option("--verbose", "Verbose connection logs", false)
     .action(async (opts) => {
       await runChannelsCommandWithDanger(async () => {
@@ -221,6 +222,7 @@ export function registerChannelsCli(program: Command) {
           {
             channel: opts.channel as string | undefined,
             account: opts.account as string | undefined,
+            phone: opts.phone as string | undefined,
             verbose: Boolean(opts.verbose),
           },
           defaultRuntime,

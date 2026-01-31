@@ -91,7 +91,12 @@ async function safeSaveCreds(
 export async function createWaSocket(
   printQr: boolean,
   verbose: boolean,
-  opts: { authDir?: string; onQr?: (qr: string) => void } = {},
+  opts: {
+    authDir?: string;
+    onQr?: (qr: string) => void;
+    phoneNumber?: string;
+    onPairingCode?: (code: string) => void;
+  } = {},
 ) {
   const baseLogger = getChildLogger(
     { module: "baileys" },
@@ -103,6 +108,7 @@ export async function createWaSocket(
   const authDir = resolveUserPath(opts.authDir ?? resolveDefaultWebAuthDir());
   await ensureDir(authDir);
   const sessionLogger = getChildLogger({ module: "web-session" });
+  sessionLogger.info({ authDir }, "WhatsApp session auth directory");
   maybeRestoreCredsFromBackup(authDir);
   const { state, saveCreds } = await useMultiFileAuthState(authDir);
   const { version } = await fetchLatestBaileysVersion();
@@ -114,7 +120,7 @@ export async function createWaSocket(
     version,
     logger,
     printQRInTerminal: false,
-    browser: ["openclaw", "cli", VERSION],
+    browser: ["Ubuntu", "Chrome", "20.0.04"],
     syncFullHistory: false,
     markOnlineOnConnect: false,
   });
@@ -125,7 +131,7 @@ export async function createWaSocket(
     (update: Partial<import("@whiskeysockets/baileys").ConnectionState>) => {
       try {
         const { connection, lastDisconnect, qr } = update;
-        if (qr) {
+        if (qr && !opts.phoneNumber) {
           opts.onQr?.(qr);
           if (printQr) {
             console.log("Scan this QR in WhatsApp (Linked Devices):");
@@ -150,6 +156,19 @@ export async function createWaSocket(
       }
     },
   );
+
+  if (opts.phoneNumber && !state.creds.registered) {
+    // Pairing code logic: request code after socket is ready to handle events
+    setTimeout(async () => {
+      try {
+        sessionLogger.info("Requesting pairing code...");
+        const code = await sock.requestPairingCode(opts.phoneNumber!);
+        opts.onPairingCode?.(code);
+      } catch (err) {
+        sessionLogger.error({ error: String(err) }, "failed to request pairing code");
+      }
+    }, 2000);
+  }
 
   // Handle WebSocket-level errors to prevent unhandled exceptions from crashing the process
   if (sock.ws && typeof (sock.ws as unknown as { on?: unknown }).on === "function") {

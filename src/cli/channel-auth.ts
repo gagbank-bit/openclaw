@@ -8,6 +8,7 @@ import { defaultRuntime, type RuntimeEnv } from "../runtime.js";
 type ChannelAuthOptions = {
   channel?: string;
   account?: string;
+  phone?: string;
   verbose?: boolean;
 };
 
@@ -34,6 +35,7 @@ export async function runChannelLogin(
     runtime,
     verbose: Boolean(opts.verbose),
     channelInput,
+    phoneNumber: opts.phone,
   });
 }
 
